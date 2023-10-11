@@ -1,0 +1,20 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: 1.*
+
+# WIP
+jobs:
+  debian:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t crystal-debian .
+
+      - name: Run Docker Image
+        run: docker run crystal-debian
