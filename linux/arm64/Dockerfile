@@ -43,13 +43,14 @@ RUN ln -s /tmp/bin/ .
 COPY /usr/lib/libgc.a .
 
 # Setup shared resources
+FROM --platform=arm64 debian:bookworm AS pkg
 WORKDIR /tmp/share
 RUN mkdir -p crystal licenses/crystal man/man1 man/man5
-COPY /tmp/crystal/src/ crystal/
-COPY /tmp/crystal/LICENSE licenses/crystal/
-COPY /tmp/crystal/man/crystal.1.gz man/man1/
-COPY /tmp/shards/man/shards.1.gz man/man1/
-COPY /tmp/shards/man/shard.yml.5.gz man/man5/
+COPY --from=builder /tmp/crystal/src/ crystal/
+COPY --from=builder /tmp/crystal/LICENSE licenses/crystal/
+COPY --from=builder /tmp/crystal/man/crystal.1.gz man/man1/
+COPY --from=builder /tmp/shards/man/shards.1.gz man/man1/
+COPY --from=builder /tmp/shards/man/shard.yml.5.gz man/man5/
 
 # Compress/archive sources
 WORKDIR /tmp
@@ -57,4 +58,4 @@ RUN tar czf crystal-${crystal_version}-1-linux-arm64.tar.gz /tmp/bin/ /tmp/lib/ 
 
 # Export from scratch
 FROM scratch
-COPY --from=builder /tmp/crystal-${crystal_version}-1-linux-arm64.tar.gz /
+COPY --from=pkg /tmp/crystal-${crystal_version}-1-linux-arm64.tar.gz /
