@@ -49,7 +49,7 @@ COPY /tmp/crystal/src/ crystal/
 COPY /tmp/crystal/LICENSE licenses/crystal/
 COPY /tmp/crystal/man/man1/crystal.1.gz man/man1/
 COPY /tmp/shards/man/man1/shards.1.gz man/man1/
-COPY /tmp/shards/man/man1/shard.yml.5.gz man/man5/
+COPY /tmp/shards/man/man5/shard.yml.5.gz man/man5/
 
 # Compress/archive sources
 WORKDIR /tmp
